@@ -6,7 +6,7 @@ var player = null
 @export var looking_speed = 200
 var line_of_sight = false
 var nav_ready = false
-
+var initial_position = Vector2.ZERO
 var mode = ""
 
 
@@ -16,6 +16,7 @@ const margin = 1.5
 func _ready():
 	$AnimatedSprite2D.play("move")
 	call_deferred("nav_setup")
+	initial_position = global_position
 
 func nav_setup():
 	# Wait for the first physics frame so the NavigationServer can sync.
@@ -31,6 +32,7 @@ func _physics_process(_delta):
 		$See.target_position = to_local(player.global_position)
 		var c = $See.get_collider()
 		var s = looking_speed
+		var points = initial_position
 		if c == player:
 			s = speed
 		var distance = player.global_position - global_position
